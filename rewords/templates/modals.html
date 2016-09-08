@@ -1,0 +1,127 @@
+<!-- 设置模态框 -->
+<div class="modal fade" id="settingModal" tabindex="-1" role="dialog" aria-labelledby="settingModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="settingModalLabel">设置学习计划</h4>
+      </div>
+      <div class="modal-body">
+        <form action="/setLearningPlan/" method="post">{% csrf_token %}
+          <input type="hidden" id="username" name="username" value=""></input>  
+          <label for="levelselect">单词表范围</label>
+          <select class="form-control" name="levelselect" id="levelselect">
+            <option value="1">CET-4</option>
+            <option value="2">CET-6</option>
+            <option value="3">IELTS</option>
+            <option value="4">TOEFL</option>
+          </select>
+          <label for="levelselect">每日背诵单词数</label>
+          <input type="number" class="form-control" name="number" id="number" placeholder="50">
+          <div class="modal-footer">
+            <input type="reset" class="btn btn-default"  ></input>
+            <input type="submit" class="btn btn-primary" ></input>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 结束确认模态框 -->
+<div class="modal fade" id="messageBox" tabindex="-1" role="dialog" aria-labelledby="messageBox">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="messageBox">结束今天的学习？</h4>
+      </div>
+     
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">结束学习</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">再学一会</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 完成提示模态框 -->
+<div class="modal fade" id="finishModal" role="dialog" aria-labelledby="finishModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>太棒了！你已经完成了今天的学习任务！</h3>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="statics">
+            您今天复习了 <span>XX</span> 个单词，学习了 <span>YY</span> 个生词！
+          </div>
+        </div>
+        <!-- 学习统计 -->
+      </div>     
+      <div class="modal-footer">
+            <input class="btn btn-default" data-dismiss="modal" aria-label="Close" value="低调"></input>
+            <input class="btn btn-primary" data-dismiss="modal" aria-label="Close" value="分享"></input>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 添加笔记模态框 -->
+<div class="modal fade" id="noteModal" tabindex="-1" role="dialog" aria-labelledby="noteModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="noteModalLabel">新建笔记</h4>
+      </div>
+      <div class="modal-body">
+        <form action="/addNewNote/" method="post">{% csrf_token %}
+          <input type="hidden" id="username" name="username" value=""></input>
+          <input type="hidden" id="word_id_input" name="word_id" value=""></input>
+
+          <div class="form-group">
+            <textarea class="form-control" name="note" id="note"></textarea>
+          </div>
+          <div class="modal-footer">
+            <input type="reset" class="btn btn-default"  ></input>
+            <input type="submit" class="btn btn-primary" ></input>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+<!-- 欢迎及学习提示 -->
+<div class="modal fade" id="welcomeModal" role="dialog" aria-labelledby="welcomeModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>欢迎回来</h3>
+      </div>
+      <div class="modal-body" >
+      <div class="container">
+        <div class="statics">
+          您今天需要复习 <span id="review_count"></span> 个单词，学习 <span id="new_count"></span> 个生词！
+        </div>
+        <div class="instruction">
+          <p>右方向键：我认识这个单词</p>
+          <p>左方向键：我不认识这个单词</p>
+          <p>上方向键：添加笔记</p>
+          <p>下方向键：太简单，无需复习</p>
+        </div>
+
+      </div>
+      <div style="text-align: center;">
+          <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-primary btn-lg btn-block">开始学习</button>
+      </div>
+        
+      </div>      
+    </div>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+arrow==0.8.0
+beautifulsoup4==4.5.1
+bs4==0.0.1
+Django==1.10
+django-bootstrap3==7.0.1
+MySQL-python==1.2.5
+python-dateutil==2.5.3
+requests==2.11.1
+six==1.10.0

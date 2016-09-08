@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container">             
+<div class="row" id="word-row">
+  <div class="col-md-3 col-md-offset-4">
+      <div class="row">
+      <div class="col-md-12">
+<!--       {% for word in words%}
+      <div id="word">{{word.english}}</div></div>
+      {% endfor %} -->
+      <div id="word"></div>
+      </div>
+      
+      </div>
+  </div>
+  <!-- <div class="row"> -->
+  <div class="col-md-8 col-md-offset-4">
+        <div id="explanation">
+        <ul id="explanation-list">
+            <!--  -->
+        </ul>
+
+        </div>
+    </div>
+  <!-- </div> -->
+</div>
+<div class="progress">
+  <div id="percentage-repeat" class="progress-bar progress-bar-striped active" style="">
+    <span ></span>
+  </div>
+  <div id="percentage-forget" class="progress-bar progress-bar-warning progress-bar-striped active " style="" >
+    <span ></span>
+  </div>
+</div>
+  
+
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#example" aria-controls="example" role="tab" data-toggle="tab">例句</a></li>
+    <li role="presentation"><a href="#notes" aria-controls="notes" role="tab" data-toggle="tab">笔记</a></li>
+    <li role="presentation"><a href="#synonym" aria-controls="synonym" role="tab" data-toggle="tab">近义词</a></li>
+
+  </ul>
+  
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="example">
+      <div id="example-container">
+        <ol id="example-list">
+        <!-- append by nextWord()-->
+        </ol>
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="notes">
+      <div id="notes-container">
+        <ul class="container" id="notes-list">
+          <!-- append by nextWord()-->
+        </ul>
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="synonym">
+      <div id="synonym-container">
+        <ul id="synonym-list">
+            <!-- append by nextWord()-->
+        </ul>
+      </div>
+    </div>
+    
+
+</div>
+</div>
+{% include 'modals.html'%}
+{% endblock %}
+
+
+
+
+{%block script%}
+<script type="text/javascript">
+$(document).ready(function(){
+  $.get("/loadwordlist/",
+  {
+      user_id:$('#user_id').attr('name')
+  },
+  function(data,status){
+    sessionStorage.clear();
+    $("#new_count").text(data.new_count)
+    $("#review_count").text(data.review_count)
+    // 把接收到的 json 数据序列化并存储
+    $.each(data.word_list, function(i,item){ 
+          sessionStorage.setItem(i,JSON.stringify(item));
+    }); 
+  });
+  $("#welcomeModal").modal('show');
+  do_right();//首先加载第一个单词
+});
+
+
+
+
+var index = 0;//单词索引
+var repeat_count = 1;
+var forget_count = 1;
+
+// 响应向右按钮，标记该单词认识
+function do_right(){
+  
+  nextWord(1);
+  updateProgressBar(repeat_count,"repeat");
+  repeat_count++;
+  
+}
+// 响应向左按钮，标记该单词不认识
+function do_left(){
+  
+  nextWord(-1);
+  updateProgressBar(forget_count,"forget");  
+  forget_count++;
+  
+
+}
+// 响应向下按钮，标记该单词无需复习
+function do_never(){
+  nextWord(8);//FIXME:magic number 直接完成，不再复习
+  updateProgressBar(repeat_count,"repeat");
+  repeat_count++;
+}
+
+
+//响应向上按钮，弹出笔记框
+function write_note() {
+  $('#noteModal').modal('show');
+}
+
+function updateProgressBar(count,type){
+  // console.log(count)
+  // console.log("####")
+  // console.log(sessionStorage.length)
+  // console.log(count*100/sessionStorage.length)
+  percentage=parseInt(count*100/sessionStorage.length);
+  if (type=="repeat") {
+    $("#percentage-repeat").css('width',percentage+'%');
+    $("#percentage-repeat").children('span').text(percentage+'%');
+  }
+  else if(type=="forget"){
+    $("#percentage-forget").css('width',percentage+'%');
+    $("#percentage-forget").children('span').text(percentage+'%');
+  }
+}
+
+
+// 注册按钮事件
+$(document).keydown(function(event){ 
+  console.log(index,sessionStorage.length)
+  if(event.keyCode == 37&&(index<sessionStorage.length)){          //left
+    do_left(); 
+  }else if (event.keyCode == 39&&(index<sessionStorage.length)){   //right
+    do_right(); 
+  }else if (event.keyCode == 38&&(index<sessionStorage.length)){   //up
+    write_note();
+  }else if(event.keyCode == 40&&(index< sessionStorage.length)){    //down
+    do_never();
+  }
+});
+
+// 显示下一个单词
+function nextWord(repeat_times){
+  if (forget_count+repeat_count>sessionStorage.length) {
+    
+    $("#finishModal").modal('show');
+    return;
+  }
+  var key =sessionStorage.key(index);
+  var word= JSON.parse(sessionStorage.getItem(key));
+  $("#word").text(key);
+  $("#notes-list").html('');
+  $("#example-list").html('');
+  $("#synonym-list").html('');
+  $("#explanation-list").html('');
+
+  for (var i = 0; i < word.explanation.length; i++) {
+    $("#explanation-list").append('<li>'+word.explanation[i]+'</li>');
+  }
+
+  for (var i = 0; i < word.notes.length; i++) {
+    $("#notes-list").append('<li class="row"><blockquote class="col-md-12" cite=From：'+word.notes[i].author+' class="col-md-10">'+word.notes[i].body+'</blockquote></li>');
+  }
+  for (var i = 0; i < word.example.length-1; i+=2) {
+    $("#example-list").append('<li><div>'+word.example[i]+'</div><div>'+word.example[i+1]+'</div></li>');
+  }
+  for (var i = 0; i < word.synonym.length; i++) {
+    if (word.synonym[i]!='') {
+      $("#synonym-list").append('<li>'+word.synonym[i]+'</li>');
+    }
+  }
+  $("#word_id_input").val(word.id);
+  $.get("/learningList/",
+  {
+      word_id:word.id,
+      repeat:repeat_times,
+  },
+  function(){
+    index++;
+  });
+}
+</script> 
+{% endblock %}
