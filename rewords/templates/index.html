@@ -168,8 +168,8 @@ $(document).keydown(function(event){
 // 显示下一个单词
 function nextWord(repeat_times){
   if (forget_count+repeat_count>sessionStorage.length) {
-    
     $("#finishModal").modal('show');
+    index++;
     return;
   }
   var key =sessionStorage.key(index);
