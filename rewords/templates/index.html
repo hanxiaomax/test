@@ -133,6 +133,7 @@ function write_note() {
   $('#noteModal').modal('show');
 }
 
+// 更新进度条
 function updateProgressBar(count,type){
   // console.log(count)
   // console.log("####")
@@ -204,5 +205,20 @@ function nextWord(repeat_times){
     index++;
   });
 }
+
+// ajax 添加笔记
+$("#addNoteBtn").click(function(){
+  $.get("/addNewNote/",
+  {
+      word_id:$("#word_id_input").val(),
+      note:$("#note_content").val(),
+  },
+  function(){
+    $('#noteModal').modal('hide');
+    $("#notes-list").append('<li class="row"><blockquote class="col-md-12" cite=From：'+"{{user.username}}"+' class="col-md-10">'+$("#note_content").val()+'</blockquote></li>')
+});
+});
+
+
 </script> 
 {% endblock %}

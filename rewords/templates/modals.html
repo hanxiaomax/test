@@ -51,13 +51,11 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>太棒了！你已经完成了今天的学习任务！</h3>
+        <h3>太棒了！</h3>
       </div>
       <div class="modal-body">
         <div class="container">
-          <div class="statics">
-            您今天复习了 <span>XX</span> 个单词，学习了 <span>YY</span> 个生词！
-          </div>
+         你已经完成了今天的学习任务！ 
         </div>
         <!-- 学习统计 -->
       </div>     
@@ -78,18 +76,19 @@
         <h4 class="modal-title" id="noteModalLabel">新建笔记</h4>
       </div>
       <div class="modal-body">
-        <form action="/addNewNote/" method="post">{% csrf_token %}
+        <form >
           <input type="hidden" id="username" name="username" value=""></input>
           <input type="hidden" id="word_id_input" name="word_id" value=""></input>
-
+          
           <div class="form-group">
-            <textarea class="form-control" name="note" id="note"></textarea>
-          </div>
-          <div class="modal-footer">
-            <input type="reset" class="btn btn-default"  ></input>
-            <input type="submit" class="btn btn-primary" ></input>
+            <textarea class="form-control" name="note" id="note_content"></textarea>
           </div>
         </form>
+          <div class="modal-footer">
+            
+            <button  id="addNoteBtn" class="btn btn-primary" >提交</button>
+          </div>
+        
       </div>
       
     </div>

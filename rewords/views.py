@@ -44,8 +44,8 @@ def logout(request):
 
 
 def index(request):
-	# saveword2db()
-	#YouDaoSpider()
+	# saveword2db() #导入单词
+	#YouDaoSpider()  #爬取单词信息
 	if request.user.is_authenticated():
 		params={
 			'user':request.user,
@@ -55,8 +55,10 @@ def index(request):
 		return HttpResponseRedirect('/login')
 
 def addNewNote(request):
-	notebody = request.POST.get('note')
-	word_id = request.POST.get('word_id')
+	notebody = request.GET.get('note')
+	word_id = request.GET.get('word_id')
+	print notebody
+	print word_id
 	word=Words.objects.get(id=word_id)
 	Notes.objects.create(
 							author = request.user,
@@ -64,7 +66,7 @@ def addNewNote(request):
 							body=notebody,
 							time=arrow.utcnow().datetime
 	)
-	return HttpResponseRedirect('/')
+	return JsonResponse({'status':'ok'})
 
 
 def setLearningPlan(request):
@@ -193,7 +195,7 @@ def YouDaoSpider():
 			#收集近义词
 			syns = ""
 			for syn in synonyms:
-				syns+=syn.text.replace(' ','')+'|'
+				syns+=syn.text.replace(' ','').replace(',','')+'|'
 			word.synonym = syns
 			#收集双语例句
 			bilinguals = soup.find_all('div',id='bilingual')[0].find_all('li')
