@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from rewords import views as rewords_views
+import settings
 
 urlpatterns = [
 	url(r'^admin/', admin.site.urls),
@@ -26,7 +27,7 @@ urlpatterns = [
     url(r'^setLearningPlan/$',rewords_views.setLearningPlan),
     url(r'^loadwordlist/$',rewords_views.loadwordlist),
     url(r'^learningList/$',rewords_views.learningList),
+    url( r'^static/(?P<path>.*)$', 'django.views.static.serve',{ 'document_root': settings.STATIC_ROOT }),
 ]
-
 
 
