@@ -135,10 +135,7 @@ function write_note() {
 
 // 更新进度条
 function updateProgressBar(count,type){
-  // console.log(count)
-  // console.log("####")
-  // console.log(sessionStorage.length)
-  // console.log(count*100/sessionStorage.length)
+
   percentage=parseInt(count*100/sessionStorage.length);
   if (type=="repeat") {
     $("#percentage-repeat").css('width',percentage+'%');
@@ -153,7 +150,6 @@ function updateProgressBar(count,type){
 
 // 注册按钮事件
 $(document).keydown(function(event){ 
-  console.log(index,sessionStorage.length)
   if(event.keyCode == 37&&(index<sessionStorage.length)){          //left
     do_left(); 
   }else if (event.keyCode == 39&&(index<sessionStorage.length)){   //right
