@@ -3,44 +3,39 @@
 
 {% block content %}
 <div class="container">             
-<div class="row" id="word-row">
-  <div class="col-md-3 col-md-offset-4">
-      <div class="row">
-      <div class="col-md-12">
-<!--       {% for word in words%}
-      <div id="word">{{word.english}}</div></div>
-      {% endfor %} -->
-      <div id="word"></div>
-      </div>
-      
-      </div>
-  </div>
-  <!-- <div class="row"> -->
-  <div class="col-md-8 col-md-offset-4">
-        <div id="explanation">
-        <ul id="explanation-list">
-            <!--  -->
-        </ul>
-
+  <div class="row" id="word-row">
+    <div class="col-md-3 col-md-offset-4">
+        <div class="row">
+          <div class="col-md-12">
+            <div id="word"></div>
+          </div>
         </div>
     </div>
-  <!-- </div> -->
-</div>
-<div class="progress">
-  <div id="percentage-repeat" class="progress-bar progress-bar-striped active" style="">
-    <span ></span>
+    <div class="col-md-8 col-md-offset-4">
+          <div id="explanation">
+            <ul id="explanation-list">
+                <!-- 单词中文翻译 -->
+            </ul>
+          </div>
+    </div>
+    <!-- </div> -->
   </div>
-  <div id="percentage-forget" class="progress-bar progress-bar-warning progress-bar-striped active " style="" >
-    <span ></span>
+
+<!-- 进度条 -->
+  <div class="progress">
+    <div id="percentage-repeat" class="progress-bar progress-bar-striped active" style="">
+      <span ></span>
+    </div>
+    <div id="percentage-forget" class="progress-bar progress-bar-warning progress-bar-striped active " style="" >
+      <span ></span>
+    </div>
   </div>
-</div>
   
 
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#example" aria-controls="example" role="tab" data-toggle="tab">例句</a></li>
     <li role="presentation"><a href="#notes" aria-controls="notes" role="tab" data-toggle="tab">笔记</a></li>
     <li role="presentation"><a href="#synonym" aria-controls="synonym" role="tab" data-toggle="tab">近义词</a></li>
-
   </ul>
   
   <!-- Tab panes -->
@@ -55,20 +50,18 @@
     <div role="tabpanel" class="tab-pane" id="notes">
       <div id="notes-container">
         <ul class="container" id="notes-list">
-          <!-- append by nextWord()-->
+          <!-- 笔记列表-->
         </ul>
       </div>
     </div>
     <div role="tabpanel" class="tab-pane" id="synonym">
       <div id="synonym-container">
         <ul id="synonym-list">
-            <!-- append by nextWord()-->
+            <!-- 近义词列表-->
         </ul>
       </div>
     </div>
-    
-
-</div>
+  </div>
 </div>
 {% include 'modals.html'%}
 {% endblock %}

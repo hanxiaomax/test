@@ -8,6 +8,7 @@ from django.conf import settings
 
 
 class LearningPlan(models.Model):
+	"学习计划表"
 	id = models.AutoField(primary_key=True)
 	level = models.IntegerField(default=0)
 	num= models.IntegerField(default=0)
@@ -17,7 +18,7 @@ class LearningPlan(models.Model):
     )
 
 class Notes(models.Model):
-	"""docstring for Notes"""
+	"笔记表"
 	id = models.AutoField(primary_key=True)
 	body = models.TextField(max_length=1000)
 	time = models.DateTimeField()
@@ -31,7 +32,7 @@ class Notes(models.Model):
     )
 
 class Words(models.Model):
-	"""docstring for Notes"""
+	"单词表，存放所有单词"
 	id = models.AutoField(primary_key=True)
 	english = models.CharField(max_length=20)
 	explanation = models.CharField(max_length=100)
@@ -53,7 +54,7 @@ class Words(models.Model):
 		
 
 class LearningList(models.Model):
-	"""docstring for Notes"""
+	"单词表，存放正在学习的单词"
 	id = models.AutoField(primary_key=True)
 	repeat_times = models.IntegerField(default=0)
 	review_time = models.DateTimeField()

@@ -14,8 +14,6 @@
     <link rel="stylesheet" href="/static/css/style.css" />
 
 
-    <!-- 清理 bootstrap -->
-
     <title>{% block title %}我爱背单词{% endblock %}</title>
 
 </head>
@@ -28,12 +26,9 @@
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-      
       <a class="navbar-brand" href="/?page=1">蒜蓉单词 —— For Vocabulary Learners with Deadlines</a>
-
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      
       <ul class="nav navbar-nav navbar-right"> 
         <li><button type="button" class="nav-btn" data-toggle="modal" data-target="#noteModal" data-username="username">
         <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
@@ -57,9 +52,9 @@
           
         
 
-    <div id="content">
-            {% block content %}{% endblock %}
-    </div>
+  <div id="content">
+      {% block content %}{% endblock %}
+  </div>
           
   <footer class="footer navbar-fixed-bottom ">
     <div id="footer-wrapper">

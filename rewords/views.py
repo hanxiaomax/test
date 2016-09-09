@@ -57,8 +57,6 @@ def index(request):
 def addNewNote(request):
 	notebody = request.GET.get('note')
 	word_id = request.GET.get('word_id')
-	print notebody
-	print word_id
 	word=Words.objects.get(id=word_id)
 	Notes.objects.create(
 							author = request.user,
@@ -97,7 +95,6 @@ def loadwordlist(request):
 		number = plan.num
 		level = plan.level
 	except Exception, e:
-		print e
 		# 创建默认计划
 		number = 50
 		level = 1
@@ -136,8 +133,6 @@ def loadwordlist(request):
 	except Exception:
 		new_count = 0;
 
-
-	print len(word_list)
 	result = {
 				'word_list':word_list,
 				'review_count':review_count,
