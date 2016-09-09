@@ -80,7 +80,7 @@ ONLINE=True
 
 name = "rewordsDB"
 user = "root"
-password = ""
+password = "qwe"
 host = ""
 port = ""
 
