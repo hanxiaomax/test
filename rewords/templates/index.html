@@ -72,6 +72,11 @@
 
 {%block script%}
 <script type="text/javascript">
+var index = 0;//单词索引
+var repeat_count = 1;
+var forget_count = 1;
+
+
 $(document).ready(function(){
   $.get("/loadwordlist/",
   {
@@ -87,15 +92,12 @@ $(document).ready(function(){
     }); 
   });
   $("#welcomeModal").modal('show');
+   if(sessionStorage.length==0)
+    location.reload();
   do_right();//首先加载第一个单词
 });
 
 
-
-
-var index = 0;//单词索引
-var repeat_count = 1;
-var forget_count = 1;
 
 // 响应向右按钮，标记该单词认识
 function do_right(){
@@ -129,7 +131,7 @@ function write_note() {
 
 // 更新进度条
 function updateProgressBar(count,type){
-
+console.log(sessionStorage.length)
   percentage=parseInt(count*100/sessionStorage.length);
   if (type=="repeat") {
     $("#percentage-repeat").css('width',percentage+'%');
@@ -157,6 +159,7 @@ $(document).keydown(function(event){
 
 // 显示下一个单词
 function nextWord(repeat_times){
+
   if (forget_count+repeat_count>sessionStorage.length) {
     $("#finishModal").modal('show');
     index++;
