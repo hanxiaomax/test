@@ -9,6 +9,7 @@
           <div class="col-md-12">
             <div id="word"></div>
           </div>
+        
         </div>
     </div>
     <div class="col-md-8 col-md-offset-4">
@@ -176,7 +177,7 @@ function nextWord(repeat_times){
   for (var i = 0; i < word.notes.length; i++) {
     $("#notes-list").append('<li class="row"><blockquote class="col-md-12" cite=From：'+word.notes[i].author+' class="col-md-10">'+word.notes[i].body+'</blockquote></li>');
   }
-  for (var i = 0; i < word.example.length-1; i+=2) {
+  for (var i = 0; i < word.example.length; i+=3) {
     $("#example-list").append('<li><div>'+word.example[i]+'</div><div>'+word.example[i+1]+'</div></li>');
   }
   for (var i = 0; i < word.synonym.length; i++) {

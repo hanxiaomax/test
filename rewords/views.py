@@ -44,7 +44,7 @@ def logout(request):
 
 
 def index(request):
-	# saveword2db() #导入单词
+	#saveword2db() #导入单词
 	#YouDaoSpider()  #爬取单词信息
 	if request.user.is_authenticated():
 		params={
@@ -176,33 +176,36 @@ def YouDaoSpider():
 	for index,word in enumerate(words):
 		try:
 			r = requests.get('http://dict.youdao.com/w/{0}/'.format(word.english),headers=headers)
-			print index 
+			print index
 			soup = BeautifulSoup(r.text)
 
 			means = soup.find_all('div',class_='trans-container')[0].find_all('li')
-			synonyms = soup.find_all('div',id="synonyms")[0].find_all('p',class_='wordGroup')[0].find_all('span')
-			
-			#收集单词的解释
 			explanation = ""
 			for mean in means:
-				explanation += mean.text.replace(' ','').replace(',','')+'|'
+				explanation += mean.text+'|'
 			word.explanation = explanation
-			#收集近义词
-			syns = ""
-			for syn in synonyms:
-				syns+=syn.text.replace(' ','').replace(',','')+'|'
-			word.synonym = syns
-			#收集双语例句
-			bilinguals = soup.find_all('div',id='bilingual')[0].find_all('li')
-
-			for bi in bilinguals:
+			try:
+				synonyms = soup.find_all('div',id="synonyms")[0].find_all('p',class_='wordGroup')[0].find_all('span')
+				syns = ""
+				for syn in synonyms:
+					syns+=syn.text.replace(' ','').replace(',','')+'|'
+				word.synonym = syns
+			except Exception, e:
+				print "synonyms",e
+			try:
+				bilinguals = soup.find_all('div',id='bilingual')[0].find_all('p')
 				example=""
-				for p in bi.find_all('p')[:2]:
-					example += p.text.strip('\n')+'|'
-				word.example += example+'|'
+				for bi in bilinguals:
+					
+					example += bi.text.strip('\n')+'|'
+					
+				word.example = example
+			except Exception, e:
+				print "bilinguals",e
+			
 			word.save()
 		except Exception, e:
-			print e
+			print index,e
 
 def saveword2db():
 	"导入数据库"

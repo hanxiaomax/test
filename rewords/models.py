@@ -45,7 +45,7 @@ class Words(models.Model):
 		return {
 			'id':self.id,
 			'explanation':[exp for exp in self.explanation.split('|')][0:-1],
-			'example':[emp for emp in self.example.split('|')][0:4],
+			'example':[emp for emp in self.example.split('|')][0:6],
 			'synonym':[s for s in self.synonym.split('|')][0:-1],
 			'notes':[{'author':notes.author.username,'body':notes.body,'time':notes.time} for notes in self.notes_set.all()]
 			
