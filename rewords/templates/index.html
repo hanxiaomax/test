@@ -93,9 +93,6 @@ $(document).ready(function(){
   });
   $("#welcomeModal").modal('show');
 
-//   if(sessionStorage.length==0)
-//`	window.location.reload();
-//  do_right();//首先加载第一个单词
 });
 
 
@@ -132,7 +129,6 @@ function write_note() {
 
 // 更新进度条
 function updateProgressBar(count,type){
-console.log(sessionStorage.length)
   percentage=parseInt(count*100/sessionStorage.length);
   if (type=="repeat") {
     $("#percentage-repeat").css('width',percentage+'%');

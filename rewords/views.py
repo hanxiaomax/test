@@ -24,14 +24,14 @@ headers = {
 # Create your views here.
 
 def login(request):
-	c=  {}
+	c =  {}
 	c.update(csrf(request))
 	return render_to_response('login.html',c)
 
 def auth_view(request):
-	username=request.POST.get('username')
-	password=request.POST.get('password')
-	user=auth.authenticate(username=username,password=password)
+	username = request.POST.get('username')
+	password = request.POST.get('password')
+	user = auth.authenticate(username=username,password=password)
 	if user is not None:
 		auth.login(request,user)
 		return HttpResponseRedirect('/')
@@ -47,7 +47,7 @@ def index(request):
 	#saveword2db() #导入单词
 	#YouDaoSpider()  #爬取单词信息
 	if request.user.is_authenticated():
-		params={
+		params = {
 			'user':request.user,
 		}
 		return render(request, 'index.html',params)
@@ -57,12 +57,12 @@ def index(request):
 def addNewNote(request):
 	notebody = request.GET.get('note')
 	word_id = request.GET.get('word_id')
-	word=Words.objects.get(id=word_id)
+	word = Words.objects.get(id=word_id)
 	Notes.objects.create(
 							author = request.user,
 							target_word = word,
-							body=notebody,
-							time=arrow.utcnow().datetime
+							body = notebody,
+							time = arrow.utcnow().datetime
 	)
 	return JsonResponse({'status':'ok'})
 
@@ -106,7 +106,6 @@ def loadwordlist(request):
 	#首先尝试从正在学习的单词中抽取 number 个
 	#条件：	1.复习次数不满8次
 	#		2.达到需要再次复习的时间（复习频率逐渐降低）
-	print number
 	review_words = LearningList.objects.filter(word__level=level,
 												author=user,
 												repeat_times__lt=8,
@@ -115,20 +114,19 @@ def loadwordlist(request):
 	
 	# 确定实际抽取的个数
 	review_count = review_words.count()
-	print review_count
 	# 查询已经学习过的单词
 	learning_words = LearningList.objects.filter(word__level=level,author=user).all()
 
-	word_list={}
+	word_list = {}
 	for index,review_word in enumerate(review_words):
-		word_list[review_word.word.english.strip('\n')]=review_word.word.toDict()
+		word_list[review_word.word.english.strip('\n')] = review_word.word.toDict()
 
 	#如果不足 number 则从单词表中提取剩余单词，作为新词
 	if review_count<number:
 		#需要过滤掉已经学习过的单词
 		words = Words.objects.filter(level=level).exclude(id__in=[word.word_id for word in learning_words]).order_by('id')[:(number-review_count)]
 		for index,word in enumerate(words):
-			word_list[word.english.strip('\n')]=word.toDict()
+			word_list[word.english.strip('\n')] = word.toDict()
 
 	try:
 		new_count = words.count()
@@ -143,18 +141,18 @@ def loadwordlist(request):
 	return JsonResponse(result)
 	
 def learningList(request):
-	user=request.user
+	user = request.user
 	repeat = int(request.GET.get('repeat'))#1或-1
 	word_id = request.GET.get('word_id')
-	word=Words.objects.get(id=word_id)	
+	word = Words.objects.get(id=word_id)	
 
 	#复习单词
 	try:
 		w = LearningList.objects.get(word=word)
 		if w.repeat_times + repeat < 0:
-			w.repeat_times= 1#最少已重复次数为1
+			w.repeat_times = 1#最少已重复次数为1
 		else:
-			w.repeat_times = w.repeat_times+repeat
+			w.repeat_times += repeat
 
 		#下次复习时间为当前时间+（已重复次数-1）天
 		#1/1 1/2 1/4 1/7 ....
@@ -166,8 +164,8 @@ def learningList(request):
 		LearningList.objects.create(
 			author = user,
 			word = word,
-			repeat_times=1,
-			review_time=arrow.now().datetime
+			repeat_times = 1,
+			review_time = arrow.now().datetime
 		)
 	return HttpResponse(status=200)
 
@@ -186,6 +184,7 @@ def YouDaoSpider():
 			for mean in means:
 				explanation += mean.text+'|'
 			word.explanation = explanation
+			#尝试获取近义词
 			try:
 				synonyms = soup.find_all('div',id="synonyms")[0].find_all('p',class_='wordGroup')[0].find_all('span')
 				syns = ""
@@ -194,9 +193,10 @@ def YouDaoSpider():
 				word.synonym = syns
 			except Exception, e:
 				print "synonyms",e
+			#尝试获取双语例句
 			try:
 				bilinguals = soup.find_all('div',id='bilingual')[0].find_all('p')
-				example=""
+				example = ""
 				for bi in bilinguals:
 					
 					example += bi.text.strip('\n')+'|'
