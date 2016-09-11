@@ -106,6 +106,7 @@ def loadwordlist(request):
 	#首先尝试从正在学习的单词中抽取 number 个
 	#条件：	1.复习次数不满8次
 	#		2.达到需要再次复习的时间（复习频率逐渐降低）
+	print number
 	review_words = LearningList.objects.filter(word__level=level,
 												author=user,
 												repeat_times__lt=8,
@@ -114,6 +115,7 @@ def loadwordlist(request):
 	
 	# 确定实际抽取的个数
 	review_count = review_words.count()
+	print review_count
 	# 查询已经学习过的单词
 	learning_words = LearningList.objects.filter(word__level=level,author=user).all()
 
